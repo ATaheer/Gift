@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greetings, Bestie!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+
+    }
+    h1 {
+      font-size: 3rem;
+      margin-top: 20%;
+      animation: fadeIn 2s ease-in-out;
+
+    }
+    button {
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fireworks {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="font-family:rubik gemstones;"><b><i>Hey,Kanwata🎉</i></b></h1>
+  <button onclick="showSurprise()">Click Me for a Surprise!</button>
+
+  <canvas id="fireworksCanvas" class="fireworks"></canvas>
+
+  <script>
+    function showSurprise() {
+      const canvas = document.getElementById("fireworksCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ["#ff4081", "#3f51b5", "#00bcd4", "#4caf50", "#ffeb3b"];
+
+      function createParticle(x, y) {
+        return {
+          x: x,
+          y: y,
+          radius: Math.random() * 3 + 1,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          dx: Math.random() * 4 - 2,
+          dy: Math.random() * 4 - 2,
+          life: Math.random() * 60 + 40
+        };
+      }
+
+      function drawParticle(particle) {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
+      }
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((particle, index) => {
+          particle.x += particle.dx;
+          particle.y += particle.dy;
+          particle.radius -= 0.02;
+          particle.life--;
+
+          if (particle.radius > 0 && particle.life > 0) {
+            drawParticle(particle);
+          } else {
+            particles.splice(index, 1);
+          }
+        });
+        requestAnimationFrame(animateParticles);
+      }
+
+      canvas.addEventListener("click", (event) => {
+        for (let i = 0; i < 100; i++) {
+          particles.push(createParticle(event.clientX, event.clientY));
+        }
+      });
+
+      for (let i = 0; i < 200; i++) {
+        particles.push(createParticle(canvas.width / 2, canvas.height / 2));
+      }
+      animateParticles();
+    }
+  </script>
+</body>
+</html>
